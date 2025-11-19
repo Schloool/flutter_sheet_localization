@@ -16,7 +16,7 @@ dependencies:
   recase: ^4.0.0
   code_builder: ^4.0.0
   dart_style: ^2.0.0 
-  source_gen: ^2.0.0
+  source_gen: ^4.0.0
   flutter_sheet_localization:
     path: ../flutter_sheet_localization
   build: ^2.0.0
