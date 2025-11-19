@@ -43,7 +43,10 @@ import 'package:template_string/template_string.dart';
       ],
       localizations,
     );
-    return DartFormatter().format(_buffer.toString());
+
+    return DartFormatter(
+      languageVersion: DartFormatter.latestLanguageVersion,
+    ).format(_buffer.toString());
   }
 
   void _createLocalization(List<String> path, Localizations localizations) {
@@ -58,7 +61,7 @@ import 'package:template_string/template_string.dart';
 
     for (var languageCode in localizations.supportedLanguageCodes) {
       final instance =
-          _createSectionInstance(path, languageCode, localizations);
+      _createSectionInstance(path, languageCode, localizations);
 
       final splits = languageCode.split(RegExp(r'[-_]'));
 
@@ -79,10 +82,10 @@ import 'package:template_string/template_string.dart';
   }
 
   String _createSectionInstance(
-    List<String> path,
-    String languageCode,
-    Section section,
-  ) {
+      List<String> path,
+      String languageCode,
+      Section section,
+      ) {
     path = [
       ...path,
       section.normalizedKey,
@@ -103,7 +106,7 @@ import 'package:template_string/template_string.dart';
           result.write(fieldName);
         }
         final translation = caze.translations.firstWhere(
-          (x) => x.languageCode == languageCode,
+              (x) => x.languageCode == languageCode,
           orElse: () => Translation(languageCode, '?'),
         );
         result.write(':');
@@ -151,9 +154,8 @@ import 'package:template_string/template_string.dart';
       } else {
         final methodArguments = <ArgumentBuilder>[];
 
-        /// Adding an argument for each category
         final categoryCases =
-            label.cases.where((x) => x.condition is CategoryCondition);
+        label.cases.where((x) => x.condition is CategoryCondition);
         for (var categoryCase in categoryCases) {
           final condition = categoryCase.condition as CategoryCondition;
           final fieldName =
@@ -161,7 +163,6 @@ import 'package:template_string/template_string.dart';
           result.addProperty('String', fieldName);
         }
 
-        /// Adding an argument for each category
         final categories = categoryCases
             .map((e) => e.condition)
             .cast<CategoryCondition>()
@@ -177,15 +178,13 @@ import 'package:template_string/template_string.dart';
           );
         }
 
-        /// Default value
         final defaultCase =
-            label.cases.map((x) => x.condition).whereType<DefaultCondition>();
+        label.cases.map((x) => x.condition).whereType<DefaultCondition>();
 
         if (defaultCase.isNotEmpty) {
           result.addProperty('String', '_${label.normalizedKey}');
         }
 
-        /// Adding an argument for each templated value
         for (var templatedValue in label.templatedValues) {
           methodArguments.add(
             ArgumentBuilder(
@@ -204,11 +203,10 @@ import 'package:template_string/template_string.dart';
           );
         }
 
-        /// Creating method body
         final body = StringBuffer('{\n');
 
         for (var c
-            in label.cases.where((x) => x.condition is CategoryCondition)) {
+        in label.cases.where((x) => x.condition is CategoryCondition)) {
           final condition = c.condition as CategoryCondition;
           final categoryField = createFieldName(condition.name);
           final categoryClassName = createClassdName(condition.name);
