@@ -20,7 +20,7 @@ dependencies:
   flutter_sheet_localization:
     path: ../flutter_sheet_localization
   build: ^4.0.0
-  analyzer: ^6.11.0
+  analyzer: ^8.0.0
   collection: ^1.15.0
   intl: ^0.19.0
   localization_builder:
